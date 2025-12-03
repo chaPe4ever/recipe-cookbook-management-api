@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "user",
     # Third party apps
     "rest_framework",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "recipe_cookbok_management.authentication.JWTAuthenticationWithoutBearer",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
@@ -174,4 +175,18 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+
+
+SWAGGER_SETTINGS = {
+    "USE_SESSION_AUTH": False,
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter your JWT token (without 'Bearer' prefix)",
+        }
+    },
+    "PERSIST_AUTH": True,
 }

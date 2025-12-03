@@ -11,12 +11,14 @@ class RecipeSerializer(ModelSerializer):
     class Meta:
         model = Recipe
         fields = ["id", "title"]
+        ref_name = "CookbookRecipe"
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email"]
+        ref_name = "CookbookUser"
 
 
 class AuthorSerializer(ModelSerializer):
@@ -25,6 +27,7 @@ class AuthorSerializer(ModelSerializer):
     class Meta:
         model = Author
         fields = ["id", "user"]
+        ref_name = "CookbookAuthor"
 
 
 class CookbookSerializer(ModelSerializer):

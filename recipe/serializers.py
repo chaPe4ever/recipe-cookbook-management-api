@@ -24,6 +24,7 @@ class RecipeSerializer(ModelSerializer):
             "ingredients",
         ]
         read_only_fields = ["author", "cookbooks"]
+        ref_name = "Recipe"
 
     def create(self, validated_data):
         # Extract ingredients data

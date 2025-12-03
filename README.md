@@ -75,6 +75,12 @@ RecipeCookbokManagement/
 - `/api/users/` - User management
 - `/admin/` - Django admin interface
 
+### API Documentation
+- `/swagger/` - Swagger UI (interactive API documentation)
+- `/redoc/` - ReDoc UI (alternative API documentation)
+- `/swagger.json` - OpenAPI schema in JSON format
+- `/swagger.yaml` - OpenAPI schema in YAML format
+
 ## Installation
 
 1. **Clone the repository**
@@ -91,7 +97,7 @@ RecipeCookbokManagement/
 
 3. **Install dependencies**
 ```bash
-   pip install django djangorestframework djangorestframework-simplejwt
+   pip install django djangorestframework djangorestframework-simplejwt drf-yasg
 ```
 
 4. **Apply migrations**

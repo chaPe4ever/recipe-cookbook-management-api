@@ -23,6 +23,7 @@ class UserSerializer(ModelSerializer):
             "is_superuser",
         ]
         read_only_fields = ["id", "date_joined", "is_staff", "is_superuser"]
+        ref_name = "User"
 
 
 class UserCreateSerializer(ModelSerializer):

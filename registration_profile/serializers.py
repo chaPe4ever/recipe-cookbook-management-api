@@ -10,6 +10,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email"]
+        ref_name = "RegistrationUser"
 
 
 class RegistrationProfileSerializer(ModelSerializer):
@@ -18,3 +19,4 @@ class RegistrationProfileSerializer(ModelSerializer):
     class Meta:
         model = RegistrationProfile
         fields = ["id", "user"]
+        ref_name = "RegistrationProfile"

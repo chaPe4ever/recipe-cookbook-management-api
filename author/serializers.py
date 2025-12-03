@@ -10,6 +10,7 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email"]
+        ref_name = "AuthorUser"
 
 
 class AuthorSerializer(ModelSerializer):
@@ -18,3 +19,4 @@ class AuthorSerializer(ModelSerializer):
     class Meta:
         model = Author
         fields = ["user"]
+        ref_name = "Author"
