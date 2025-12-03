@@ -1,7 +1,7 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user, get_user_model
 from rest_framework.serializers import ModelSerializer
 
-from author.models import Author
+from registration_profile.models import RegistrationProfile
 
 User = get_user_model()
 
@@ -12,9 +12,9 @@ class UserSerializer(ModelSerializer):
         fields = ["id", "email"]
 
 
-class AuthorSerializer(ModelSerializer):
+class RegistrationProfileSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
-        model = Author
-        fields = ["user"]
+        model = RegistrationProfile
+        fields = ["id", "user"]
