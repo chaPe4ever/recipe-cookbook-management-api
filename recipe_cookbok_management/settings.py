@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "cookbook",
     "ingredient",
     "recipe",
+    "user",
     # Third party apps
     "rest_framework",
 ]
@@ -110,6 +111,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# user should be the name of your app, User should be the name of your model
+AUTH_USER_MODEL = "user.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

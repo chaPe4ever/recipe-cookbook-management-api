@@ -9,4 +9,7 @@ class Recipe(models.Model):
     difficulty = models.IntegerField(choices=DIFFICULTY_CHOICES)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    favorite = models.BooleanField(blank=True, null=True)
+    favorite = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title} with difficulty {self.difficulty}"
