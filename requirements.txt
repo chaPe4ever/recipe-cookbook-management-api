@@ -15,3 +15,5 @@ sqlparse==0.5.4
 types-PyYAML==6.0.12.20250915
 typing_extensions==4.15.0
 uritemplate==4.2.0
+python-decouple==3.8  # Environment variable management
+dj-database-url==2.1.0  # Database URL parsing
