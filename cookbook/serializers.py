@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
 
@@ -42,8 +43,17 @@ class CookbookSerializer(ModelSerializer):
         source="recipes",
     )
     author = AuthorSerializer(read_only=True)
+    recipe_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Cookbook
-        fields = ["id", "title", "description", "recipes", "recipe_ids", "author"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "recipes",
+            "recipe_ids",
+            "recipe_count",
+            "author",
+        ]
         read_only_fields = ["author"]

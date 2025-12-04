@@ -1,14 +1,14 @@
 from django.contrib import admin
-from django.urls import path, include, re_path
-from rest_framework_simplejwt import views as jwt_views
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
+from django.urls import include, path, re_path
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_schema_view(
     openapi.Info(
         title="Recipe Cookbook Management API",
-        default_version='v1',
+        default_version="v1",
         description="""
 API documentation for Recipe Cookbook Management System
 
@@ -51,7 +51,15 @@ urlpatterns = [
         "api/token/verify/", jwt_views.TokenVerifyView.as_view(), name="token_refresh"
     ),
     # Swagger documentation URLs
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    re_path(
+        r"^swagger(?P<format>\.json|\.yaml)$",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
+    ),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]

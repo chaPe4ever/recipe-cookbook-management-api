@@ -6,18 +6,23 @@ A Django REST API for managing recipes, cookbooks, authors, and ingredients. Thi
 
 - **User Management**: Custom user model with email-based authentication
 - **Recipe Management**: Create and manage recipes with difficulty levels (Easy, Intermediate, Hard)
-- **Cookbook Organization**: Group recipes into cookbooks
+- **Cookbook Organization**: Group recipes into cookbooks with recipe count tracking
 - **Ingredient Tracking**: Manage ingredients and their associations with recipes
 - **Author Profiles**: User profiles linked to recipes and cookbooks
 - **REST API**: Full RESTful API with Django REST Framework
+- **Query Filtering**: Filter recipes and cookbooks by title and description
 - **JWT Authentication**: Secure token-based authentication using SimpleJWT
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
 - **Admin Interface**: Django admin panel for easy data management
+- **Type Safety**: django-stubs for improved IDE support and type checking
 
 ## Technology Stack
 
-- **Framework**: Django 4.2.26
-- **API**: Django REST Framework
+- **Framework**: Django 6.0
+- **API**: Django REST Framework 3.16.1
 - **Authentication**: djangorestframework-simplejwt
+- **API Documentation**: drf-yasg (Swagger/OpenAPI)
+- **Type Checking**: django-stubs (for IDE support)
 - **Database**: SQLite3 (Development)
 - **Python**: 3.x
 
@@ -55,6 +60,7 @@ RecipeCookbokManagement/
 - Title, description, timestamps
 - Many-to-many relationship with Recipes
 - Foreign key to Author
+- Computed field: `recipe_count` (number of recipes in cookbook)
 
 ### Ingredient
 - Title and description
@@ -74,6 +80,23 @@ RecipeCookbokManagement/
 - `/api/recipes/` - Recipe CRUD operations
 - `/api/users/` - User management
 - `/admin/` - Django admin interface
+
+### Query Parameters & Filtering
+
+The API supports filtering on list endpoints using query parameters:
+
+**Recipes** (`/api/recipes/`):
+- `?title=str` - Filter recipes by title (case-insensitive partial match)
+
+**Cookbooks** (`/api/cookbooks/`):
+- `?title=str` - Filter cookbooks by title (case-insensitive partial match)
+- `?description=str` - Filter cookbooks by description (case-insensitive partial match)
+
+**Example:**
+```bash
+GET /api/recipes/?title=pasta
+GET /api/cookbooks/?title=italian&description=traditional
+```
 
 ### API Documentation
 - `/swagger/` - Swagger UI (interactive API documentation)
@@ -97,7 +120,12 @@ RecipeCookbokManagement/
 
 3. **Install dependencies**
 ```bash
-   pip install django djangorestframework djangorestframework-simplejwt drf-yasg
+   pip install -r requirements.txt
+```
+
+   Or install manually:
+```bash
+   pip install django djangorestframework djangorestframework-simplejwt drf-yasg django-stubs
 ```
 
 4. **Apply migrations**
@@ -137,6 +165,15 @@ The API will be available at `http://127.0.0.1:8000/`
 - Configure in `REST_FRAMEWORK` settings
 
 ## Development
+
+### Virtual Environment
+This project uses Python virtual environments (`venv`). Always activate the virtual environment before working:
+
+```bash
+source venv/bin/activate  # On macOS/Linux
+# or
+venv\Scripts\activate     # On Windows
+```
 
 ### Running Tests
 ```bash

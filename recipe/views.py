@@ -5,11 +5,12 @@ from rest_framework.generics import (
 
 from author.models import Author
 from recipe.models import Recipe
-from recipe_cookbok_management.permissions import IsAuthorOrReadOnly, IsOwnerOrModerator
 from recipe.serializers import RecipeSerializer
+from recipe_cookbok_management.mixins import FilterMixin
+from recipe_cookbok_management.permissions import IsAuthorOrReadOnly, IsOwnerOrModerator
 
 
-class ListCreateRecipeView(ListCreateAPIView):
+class ListCreateRecipeView(FilterMixin, ListCreateAPIView):
     """
     GET: Anyone can view recipes
     POST: Only users in 'Authors' group can create
@@ -18,6 +19,8 @@ class ListCreateRecipeView(ListCreateAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = [IsAuthorOrReadOnly]
+
+    filterset_fields = {"title": "title__icontains"}
 
     def perform_create(self, serializer):
         # Get the Author instance for the current user
