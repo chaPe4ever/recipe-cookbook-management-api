@@ -5,4 +5,5 @@
 web: gunicorn recipe_cookbok_management.wsgi:application --bind 0.0.0.0:$PORT
 
 # Release process - runs migrations and collects static files before deployment
+# Note: If release command doesn't run on Render, add collectstatic to Build Command in dashboard
 release: python manage.py migrate && python manage.py collectstatic --noinput
