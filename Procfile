@@ -4,6 +4,5 @@
 # Web process - runs the Django application
 web: gunicorn recipe_cookbok_management.wsgi:application --bind 0.0.0.0:$PORT
 
-# Release process - runs migrations before deployment
-release: python manage.py migrate
-
+# Release process - runs migrations and collects static files before deployment
+release: python manage.py migrate && python manage.py collectstatic --noinput
