@@ -90,7 +90,14 @@ WSGI_APPLICATION = "recipe_cookbok_management.wsgi.application"
 # Database - Use PostgreSQL in production
 _database_url = config("DATABASE_URL", default=None)
 if _database_url:
-    DATABASES = {"default": dj_database_url.config(default=cast(str, _database_url))}
+    # Parse database URL and add SSL requirements for cloud databases
+    db_config = dj_database_url.config(default=cast(str, _database_url))
+    # Add SSL requirement for PostgreSQL (required by Render, Heroku, etc.)
+    if db_config.get("ENGINE") == "django.db.backends.postgresql":
+        # Configure SSL for PostgreSQL connections
+        db_config.setdefault("OPTIONS", {})
+        db_config["OPTIONS"]["sslmode"] = "require"
+    DATABASES = {"default": db_config}
 else:
     # Development: SQLite3
     DATABASES = {
