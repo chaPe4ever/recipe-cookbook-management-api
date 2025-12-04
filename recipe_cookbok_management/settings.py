@@ -1,6 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
-from typing import cast
+from typing import Any, Dict, cast
 
 import dj_database_url
 from decouple import config
@@ -91,12 +91,15 @@ WSGI_APPLICATION = "recipe_cookbok_management.wsgi.application"
 _database_url = config("DATABASE_URL", default=None)
 if _database_url:
     # Parse database URL and add SSL requirements for cloud databases
-    db_config = dj_database_url.config(default=cast(str, _database_url))
+    db_config = cast(
+        Dict[str, Any], dj_database_url.config(default=cast(str, _database_url))
+    )
     # Add SSL requirement for PostgreSQL (required by Render, Heroku, etc.)
     if db_config.get("ENGINE") == "django.db.backends.postgresql":
         # Configure SSL for PostgreSQL connections
-        db_config.setdefault("OPTIONS", {})
-        db_config["OPTIONS"]["sslmode"] = "require"
+        options: Dict[str, Any] = db_config.get("OPTIONS", {}) or {}
+        options["sslmode"] = "require"
+        db_config["OPTIONS"] = options
     DATABASES = {"default": db_config}
 else:
     # Development: SQLite3
