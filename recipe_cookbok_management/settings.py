@@ -89,6 +89,7 @@ WSGI_APPLICATION = "recipe_cookbok_management.wsgi.application"
 
 # Database - Use PostgreSQL in production
 _database_url = config("DATABASE_URL", default=None)
+_db_schema = config("DB_SCHEMA", default=None)
 if _database_url:
     # Parse database URL and add SSL requirements for cloud databases
     db_config = cast(
@@ -99,6 +100,12 @@ if _database_url:
         # Configure SSL for PostgreSQL connections
         options: Dict[str, Any] = db_config.get("OPTIONS", {}) or {}
         options["sslmode"] = "require"
+        # Configure custom schema if DB_SCHEMA is set
+        if _db_schema:
+            # Set search_path to use the custom schema
+            # This makes Django use the specified schema for all operations
+            # Quote schema name to handle case-sensitive names properly
+            options["options"] = f'-c search_path="{_db_schema}",public'
         db_config["OPTIONS"] = options
     DATABASES = {"default": db_config}
 else:
