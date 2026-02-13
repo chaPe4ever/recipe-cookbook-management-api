@@ -20,6 +20,11 @@ ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts_str.split(",") if host.
 # Add localhost for development when DEBUG is True
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+# In production, allow localhost/127.0.0.1 for in-container healthchecks
+if not DEBUG and ALLOWED_HOSTS:
+    for h in ("localhost", "127.0.0.1"):
+        if h not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS = list(ALLOWED_HOSTS) + [h]
 
 # Security headers (only enabled in production with HTTPS)
 if not DEBUG:
@@ -90,6 +95,7 @@ WSGI_APPLICATION = "recipe_cookbok_management.wsgi.application"
 # Database - Use PostgreSQL in production
 _database_url = config("DATABASE_URL", default=None)
 _db_schema = config("DB_SCHEMA", default=None)
+_db_host = config("DB_HOST", default=None)
 if _database_url:
     # Parse database URL and add SSL requirements for cloud databases
     db_config = cast(
@@ -108,6 +114,22 @@ if _database_url:
             options["options"] = f'-c search_path="{_db_schema}",public'
         db_config["OPTIONS"] = options
     DATABASES = {"default": db_config}
+elif _db_host:
+    # Docker/production: build from DB_HOST and POSTGRES_*
+    _db_name = config("POSTGRES_DB", default="recipe_db")
+    _db_user = config("POSTGRES_USER", default="recipe_user")
+    _db_pass = config("POSTGRES_PASSWORD", default="")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": _db_name,
+            "USER": _db_user,
+            "PASSWORD": _db_pass,
+            "HOST": _db_host,
+            "PORT": config("POSTGRES_PORT", default="5432"),
+            "OPTIONS": {"sslmode": "prefer"},
+        }
+    }
 else:
     # Development: SQLite3
     DATABASES = {
