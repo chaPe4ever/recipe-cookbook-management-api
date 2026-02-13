@@ -22,6 +22,9 @@ class ListCreateUserView(ListCreateAPIView):
 
     def get_permissions(self):
         """Allow public registration but require auth for listing"""
+        # Allow OPTIONS (CORS preflight) without authentication
+        if self.request.method == "OPTIONS":
+            return [AllowAny()]
         if self.request.method == "POST":
             return [AllowAny()]
         return [IsAuthenticated()]
@@ -37,3 +40,9 @@ class RetrieveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsOwnerOrModerator]
+
+    def get_permissions(self):
+        """Allow OPTIONS (CORS preflight) without authentication"""
+        if self.request.method == "OPTIONS":
+            return [AllowAny()]
+        return super().get_permissions()
