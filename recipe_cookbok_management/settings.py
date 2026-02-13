@@ -58,11 +58,9 @@ INSTALLED_APPS = [
     # Third party apps
     "rest_framework",
     "drf_yasg",
-    "corsheaders",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -191,35 +189,8 @@ REST_FRAMEWORK = {
         "recipe_cookbok_management.authentication.JWTAuthenticationWithoutBearer",
     ],
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    # Allow OPTIONS (CORS preflight) without authentication
-    "DEFAULT_METADATA_CLASS": "rest_framework.metadata.SimpleMetadata",
 }
 
-# CORS Configuration
-# Allow requests from the API domain (for Swagger UI and frontend)
-CORS_ALLOWED_ORIGINS = []
-if not DEBUG and ALLOWED_HOSTS:
-    for host in ALLOWED_HOSTS:
-        if not host or not host.strip():
-            continue
-        domain = host.strip().replace("http://", "").replace("https://", "").split("/")[0].split(":")[0]
-        if domain and domain not in ("localhost", "127.0.0.1", "0.0.0.0"):
-            CORS_ALLOWED_ORIGINS.extend([f"https://{domain}", f"http://{domain}"])
-            break
-
-# Allow credentials for authenticated requests
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=5),

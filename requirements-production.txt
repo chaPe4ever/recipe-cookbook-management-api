@@ -10,5 +10,4 @@ gunicorn==21.2.0  # WSGI HTTP Server for production
 whitenoise==6.6.0  # Static file serving
 python-decouple==3.8  # Environment variable management
 dj-database-url==2.1.0  # Database URL parsing
-django-cors-headers==4.3.1  # CORS support for API
 
